@@ -1,5 +1,4 @@
 # Recycling Management System
-
 This project is a console application for managing products and their materials. 
 The goal is to make it easier to understand the environmental impact of different products and how they should be recycled.
 
