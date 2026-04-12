@@ -1,5 +1,4 @@
 # Recycling Management System
-
 This project is a console application for managing products and their materials. 
 The goal is to make it easier to understand the environmental impact of different products and how they should be recycled.
 
@@ -42,4 +41,4 @@ When stable, develop is merged into main.
 
 ## Team
 - Abdulfatah Ijbara – Developer, owner of github repo
-- Raluca teodora tabacaru - Developer 
+- Raluca Teodora Tabacaru - Developer 
