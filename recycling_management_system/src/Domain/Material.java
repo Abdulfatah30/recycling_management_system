@@ -1,3 +1,4 @@
+package Domain;
 public class Material {
     private String name;
     private double impactValue;

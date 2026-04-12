@@ -1,3 +1,8 @@
+package Application;
+
+import Domain.ImpactCalculationStrategy;
+import Domain.Product;
+
 public class ProductApplicationService {
  private ImpactCalculationStrategy strategy;
 
@@ -11,6 +16,6 @@ public class ProductApplicationService {
 
  }
  public void listProduct(){
-    
+
  }
 }
