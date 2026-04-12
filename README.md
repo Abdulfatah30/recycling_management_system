@@ -39,6 +39,31 @@ The project focuses on clean object-oriented design, clear structure, and separa
 All changes are made in feature branches and merged into develop.
 When stable, develop is merged into main.
 
+## Architectural Decisions
+
+The system is designed using a layered architecture to ensure clear separation of concerns, maintainability, and testability.
+
+### Layered Architecture
+
+The application is divided into three main layers:
+
+#### Domain Layer
+Contains the core business logic and domain model. This includes entities such as Product, Material, RecyclingCategory, and RecyclingGuidance. It also includes the ImpactCalculationStrategy interface and its implementations. The domain layer is independent of any UI or application services and represents the pure business rules of the system.
+
+#### Application Layer
+Contains services that coordinate domain objects and implement use cases. ProductService and MaterialService belong here. This layer handles operations such as creating products, retrieving data, and calculating impact by delegating to domain strategies. It depends on the domain layer but contains no UI logic.
+
+#### Presentation Layer
+Contains the console-based user interface (ConsoleUI). It is responsible only for input and output operations and does not contain business logic. It communicates with the application layer to execute user actions.
+
+### Design Principles Applied
+
+The architecture follows SOLID principles:
+
+* SRP (Single Responsibility Principle): Each class has one clear responsibility. Domain entities represent data and behavior related to the business concept only. Services handle orchestration. UI handles interaction only.
+* OCP (Open/Closed Principle): Impact calculation is implemented using the Strategy pattern. New calculation methods can be added without modifying existing code.
+* DIP (Dependency Inversion Principle): High-level services depend on abstractions (ImpactCalculationStrategy) rather than concrete implementations, enabling flexibility and testability.
+
 ## Team
 - Abdulfatah Ijbara – Developer, owner of github repo
 - Raluca Teodora Tabacaru - Developer 
