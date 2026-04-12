@@ -1,4 +1,11 @@
 package Domain;
-public class RecyclingCategory {
-    private String name;
+public enum RecyclingCategory {
+    PLASTIC,
+    METAL,
+    GLASS,
+    PAPER,
+    ORGANIC,
+    ELECTRONIC,
+    HAZARDOUS,
+    NON_RECYCLABLE
 }
