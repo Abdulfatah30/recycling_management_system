@@ -1,14 +1,35 @@
 package Presentation;
+import java.util.Scanner;
+import Application.MaterialService;
+import Application.ProductService;
 
 public class ConsoleUI {
+    private Scanner scanner = new Scanner(System.in);
+    private ProductService productService = new ProductService(Strategy strategy);
+    private MaterialService materialService = new MaterialService();
 
-    public void menuLoop(){
+    public void start(){
 
     }
-    public void readinput(){
+    public void displayMainMenu(){
+    
+    }
+    public void controllCreateProduct(){
 
     }
-    public void printOutput(){
+    public void controllListProducts(){
+
+    }
+    public void controllProductImpact(){
+
+    }
+    public void controllRecyclingMenu(){
+
+    }
+    public void controllListMaterials(){
+        
+    }
+    public void getProductDetails(Product product){
 
     }
 }
