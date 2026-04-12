@@ -41,4 +41,4 @@ When stable, develop is merged into main.
 
 ## Team
 - Abdulfatah Ijbara – Developer, owner of github repo
-- Raluca teodora tabacaru - Developer 
+- Raluca Teodora Tabacaru - Developer 
