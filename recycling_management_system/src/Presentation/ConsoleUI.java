@@ -2,6 +2,7 @@ package Presentation;
 import java.util.Scanner;
 import Application.MaterialService;
 import Application.ProductService;
+import Domain.Product;
 
 public class ConsoleUI {
     private Scanner scanner = new Scanner(System.in);
