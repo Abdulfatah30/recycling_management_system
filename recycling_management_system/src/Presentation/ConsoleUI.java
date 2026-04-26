@@ -8,9 +8,13 @@ import Domain.Strategy_2;
 
 public class ConsoleUI {
     private Scanner scanner = new Scanner(System.in);
-    //private ProductService productService = new ProductService(Strategy strategy);
-    private MaterialService materialService = new MaterialService();
-
+    private final ProductService productService;
+    private final MaterialService materialService;
+    
+    public ConsoleUI(MaterialService materialService, ProductService productService){
+        this.productService = productService;
+        this.materialService = materialService;
+    }
     public void start(){
         boolean running = true;
         displayMainMenu();
