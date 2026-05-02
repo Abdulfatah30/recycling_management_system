@@ -2,9 +2,7 @@ package Presentation;
 import java.util.Scanner;
 import Application.MaterialService;
 import Application.ProductService;
-import Domain.Product;
-import Domain.Strategy_1;
-import Domain.Strategy_2;
+import Domain.*;
 
 public class ConsoleUI {
     private Scanner scanner = new Scanner(System.in);

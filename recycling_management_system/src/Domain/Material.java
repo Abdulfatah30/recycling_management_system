@@ -1,15 +1,22 @@
 package Domain;
+
 public class Material {
     private String name;
     private double impactValue;
     private RecyclingCategory recyclingCategory;
-    private String instruction;
+    private String recyclingInstruction;
 
+public Material(String name, double impactValue, RecyclingCategory category, String instructions){
+    this.name = name;
+    this.impactValue = impactValue;
+    this.recyclingCategory = category;
+    this.recyclingInstruction = instructions;
+}
 public String getName(){
-    return " ";
+    return "";
 }
 public double getImpactValue(){
-    return 0.00;
+    return 0.0;
 }
 public RecyclingCategory getRecyclingCategory(){
     return RecyclingCategory.NON_RECYCLABLE;

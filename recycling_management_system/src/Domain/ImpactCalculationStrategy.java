@@ -1,5 +1,6 @@
 package Domain;
+import java.util.List;
 
 public interface ImpactCalculationStrategy {
-    double calculateImpact(Product product);
+    double calculateImpact(List<Material> materials);
 }
