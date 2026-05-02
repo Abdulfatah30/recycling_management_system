@@ -1,10 +1,10 @@
 package Domain;
 import java.util.List;
 
-public class WeightedImpactStragety implements ImpactCalculationStrategy {
+public class WeightedImpactStrategy implements ImpactCalculationStrategy {
     private final int lifespan;
 
-    public WeightedImpactStragety(int lifespan){
+    public WeightedImpactStrategy(int lifespan){
         this.lifespan = lifespan;
     }
 

@@ -64,6 +64,29 @@ The architecture follows SOLID principles:
 * OCP (Open/Closed Principle): Impact calculation is implemented using the Strategy pattern. New calculation methods can be added without modifying existing code.
 * DIP (Dependency Inversion Principle): High-level services depend on abstractions (ImpactCalculationStrategy) rather than concrete implementations, enabling flexibility and testability.
 
+## Design Pattern: Strategy
+
+### What problem did it solve?
+Environmental impact calculation had to support multiple different algorithms
+(simple strategy and weighted by lifespan strategy). Without a pattern, this logic would live
+inside ProductService as an if/switch block — adding a new algorithm would
+mean editing existing code, which violates OCP.
+
+### Why was Strategy the right choice?
+The Strategy pattern allows each calculation algorithm to be its own class.
+ProductService depends only on the ImpactCalculationStrategy interface, not
+on any concrete implementation — it doesn't know or care which strategy it uses.
+
+### What improved?
+- Adding a new calculation method requires only creating a new class
+- ProductService and Product never need to change
+- Each strategy can be tested in isolation
+
+### What would happen without it?
+ProductService would grow an if/switch block every time a new calculation rule
+was needed. The UI would need to know about concrete calculation classes.
+Testing would be harder because all logic would be tangled in one method.
+
 ## Team
 - Abdulfatah Ijbara – Developer, owner of github repo
 - Raluca Teodora Tabacaru - Developer 

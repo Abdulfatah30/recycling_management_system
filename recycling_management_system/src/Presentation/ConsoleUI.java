@@ -2,7 +2,9 @@ package Presentation;
 import java.util.Scanner;
 import Application.MaterialService;
 import Application.ProductService;
-import Domain.*;
+import Application.StrategyService;
+import Domain.ImpactCalculationStrategy;
+import Domain.Product;
 
 public class ConsoleUI {
     private Scanner scanner = new Scanner(System.in);
@@ -69,8 +71,27 @@ public class ConsoleUI {
     public void controllListProducts(){
 
     }
-    public void controllProductImpact(){
+    public void controllProductImpact() {
+    System.out.print("Enter product name: ");
+    String name = scanner.nextLine();
 
+    System.out.println("Choose a calculation strategy:");
+    System.out.println("  1. Simple (sum of material impacts)");
+    System.out.println("  2. Weighted (adjusted for product lifespan)");
+    System.out.print("Your choice: ");
+    int choice = scanner.nextInt();
+    scanner.nextLine();
+
+    Product product = productService.getProductDetails(name);
+    if (product == null) {
+        System.out.println("Product not found.");
+        return;
+    }
+
+    ImpactCalculationStrategy strategy = StrategyService.create(choice, product.getEstimatedLifespanYears());
+    double impact = productService.calculateImpact(name, strategy);
+
+    System.out.printf("Environmental impact for %s: %.2f%n", name, impact);
     }
     public void controllRecyclingMenu(){
 

@@ -8,28 +8,33 @@ public class Product {
     private int lifespan;
     private List<Material> materials = new ArrayList<>();
 
+Product(String name, String category, int lifespan, List<Material> materials){
+    this.name = name;
+    this.category = category;
+    this.materials = materials;
+}
 public String getName() {
-    return "";
+    return name;
 }
 
 public String getCategory() {
-    return "";
+    return category;
 }
 
 public int getEstimatedLifespanYears() {
-    return 0;
+    return lifespan;
 }
 
 public List<Material> getMaterials() {
-    return new ArrayList<>();
+    return materials;
 }
 
 public void addMaterial(Material material) {
-    
+    materials.add(material);
 }
 
 public double calculateImpact(ImpactCalculationStrategy strategy) {
-    return 0.0;
+    return strategy.calculateImpact(this.materials);
 }
 
 public RecyclingGuidance getRecyclingGuidance() {
