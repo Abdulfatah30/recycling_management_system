@@ -16,7 +16,7 @@ public String getName(){
     return "";
 }
 public double getImpactValue(){
-    return 0.0;
+    return impactValue;
 }
 public RecyclingCategory getRecyclingCategory(){
     return RecyclingCategory.NON_RECYCLABLE;

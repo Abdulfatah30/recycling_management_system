@@ -16,4 +16,5 @@ public class WeightedImpactStrategy implements ImpactCalculationStrategy {
         }
         return total/Math.max(1, lifespan);
     }
+    
 }

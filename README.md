@@ -87,6 +87,16 @@ ProductService would grow an if/switch block every time a new calculation rule
 was needed. The UI would need to know about concrete calculation classes.
 Testing would be harder because all logic would be tangled in one method.
 
+## Code Testing
+
+This project uses standalone JUnit 5 for testing. The JUnit console launcher is downloaded manually from:
+https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.13.0-M3/junit-platform-console-standalone-1.13.0-M3.jar 
+
+put the file in lib/. 
+### How to run tests
+javac -cp "lib/*;src" -d out src/Domain/*.java src/Test/*.java; java -jar lib/junit-platform-console-standalone-1.13.0-M3.jar --class-path out --scan-class-path 
+
+should compile and run it. 
 ## Team
 - Abdulfatah Ijbara – Developer, owner of github repo
 - Raluca Teodora Tabacaru - Developer 

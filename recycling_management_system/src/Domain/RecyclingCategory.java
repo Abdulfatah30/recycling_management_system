@@ -7,5 +7,6 @@ public enum RecyclingCategory {
     ORGANIC,
     ELECTRONIC,
     HAZARDOUS,
-    NON_RECYCLABLE
+    NON_RECYCLABLE,
+    WOOD
 }
