@@ -1,0 +1,31 @@
+name: Java CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Compile all sources
+        run: |
+          mkdir -p out
+          javac -cp "lib/*:src" -d out \
+            src/Domain/*.java \
+            src/Application/*.java \
+            src/Test/*.java
+
+      - name: Run tests
+        run: |
+          java -jar lib/junit-platform-console-standalone-1.13.0-M3.jar \
+            --class-path out \
+            --scan-class-path

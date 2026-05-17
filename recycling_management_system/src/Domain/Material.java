@@ -13,15 +13,15 @@ public Material(String name, double impactValue, RecyclingCategory category, Str
     this.recyclingInstruction = instructions;
 }
 public String getName(){
-    return "";
+    return name;
 }
 public double getImpactValue(){
     return impactValue;
 }
 public RecyclingCategory getRecyclingCategory(){
-    return RecyclingCategory.NON_RECYCLABLE;
+    return recyclingCategory;
 }
 public String getRecyclingInstruction(){
-    return "";
+    return recyclingInstruction;
 }
 }

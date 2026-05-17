@@ -7,8 +7,7 @@ public class Product {
     private String category;
     private int lifespan;
     private List<Material> materials = new ArrayList<>();
-
-Product(String name, String category, int lifespan, List<Material> materials){
+public Product(String name, String category, int lifespan, List<Material> materials){
     this.name = name;
     this.category = category;
     this.materials = materials;
