@@ -1,0 +1,104 @@
+@startuml
+
+class Product {
+  - name : String
+  - category : String
+  - lifespan : int
+  - materials : List<Material>
+  + getName() : String
+  + getCategory() : String
+  + getEstimatedLifespanYears() : int
+  + getMaterials() : List<Material>
+  + addMaterial(material : Material) : void
+  + calculateImpact(strategy : ImpactCalculationStrategy) : double
+  + getRecyclingGuidance() : RecyclingGuidance
+}
+
+class Material {
+  - name : String
+  - impactValue : double
+  - recyclingCategory : RecyclingCategory
+  - recyclingInstruction : String
+  + getName() : String
+  + getImpactValue() : double
+  + getRecyclingCategory() : RecyclingCategory
+  + getRecyclingInstruction() : String
+}
+
+enum RecyclingCategory {
+  PLASTIC
+  METAL
+  GLASS
+  PAPER
+  ORGANIC
+  ELECTRONIC
+  HAZARDOUS
+  NON_RECYCLABLE
+}
+
+class RecyclingGuidance {
+  - product : Product
+  + generateGuidance(): String
+}
+
+Product "1" *-- "*" Material
+Material --> RecyclingCategory
+RecyclingGuidance "1" o-- "1" Product
+
+
+interface ImpactCalculationStrategy {
+  + calculateImpact(materials : List<Material>) : double
+}
+
+class Strategy_1 {
+  + calculateImpact(materials : List<Material>) : double
+}
+
+class Strategy_2 {
+  + calculateImpact(materials : List<Material>) : double
+}
+
+ImpactCalculationStrategy <|.. Strategy_1
+ImpactCalculationStrategy <|.. Strategy_2
+
+
+class ProductService {
+  - products : List<Product>
+  - materialService : MaterialService
+  + createProduct(name : String, category : String, lifespan : int, materialNames : List<String>) : Product
+  + listProducts() : List<Product>
+  + getProductDetails(name : String) : Product
+  + calculateImpact(productName : String, strategy : ImpactCalculationStrategy) : double
+  + getRecyclingGuidance(productName : String) : RecyclingGuidance
+}
+
+class MaterialService {
+  - materials : List<Material>
+  + getMaterial(name : String) : Material
+  + listMaterials() : List<Material>
+  + findByMaterialName(name : String) : Material
+}
+
+ProductService --> ImpactCalculationStrategy
+ProductService ..> Product
+ProductService --> MaterialService
+
+
+class ConsoleUI {
+  - scanner : Scanner
+  - productService : ProductService
+  - materialService : MaterialService
+  + start() : void
+  + displayMainMenu() : void
+  + controllCreateProduct() : void
+  + controllListProducts() : void
+  + controllProductImpact() : void
+  + controllRecyclingMenu() : void
+  + controllListMaterials() : void
+  + getProductDetails(product : Product) : void
+}
+
+ConsoleUI --> ProductService
+ConsoleUI --> MaterialService
+
+@enduml
