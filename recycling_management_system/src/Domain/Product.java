@@ -11,6 +11,7 @@ public Product(String name, String category, int lifespan, List<Material> materi
     this.name = name;
     this.category = category;
     this.materials = materials;
+    this.lifespan = lifespan;
 }
 public String getName() {
     return name;
