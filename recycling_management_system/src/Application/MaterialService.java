@@ -6,13 +6,17 @@ import Domain.Material;
 public class MaterialService {
     private List<Material> materials = new ArrayList <>();
 
-    public Material getMaterial(String name){
-        return null;
+    public List<Material> listMaterials() {
+        return materials;
     }
-    public List<Material> listMaterials(){
-        return null;
-    }
+
     public Material findByMaterialName(String name){
-        return null;
+            for (Material material : materials) {
+            if (material.getName().equalsIgnoreCase(name)) {
+                return material;
+            }
+        }
+
+    return null;
     }
 }

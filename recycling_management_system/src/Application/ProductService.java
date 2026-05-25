@@ -12,12 +12,20 @@ public class ProductService {
       return null;
    }
    public List<Product> listProducts(){
-      return null;
+      return products;
    }
    public Product getProductDetails(String name){
 
-      return null;
+    for (Product product : products) {
+        if (product.getName().equalsIgnoreCase(name)) {
+            return product;
+        }
+    }
+
+    return null;
+    
    }
+
    public double calculateImpact (String productName, ImpactCalculationStrategy strategy){
       Product product = getProductDetails(productName);
       if (product == null){
