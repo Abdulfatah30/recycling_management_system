@@ -57,7 +57,6 @@ public class MaterialService {
     try (ObjectOutputStream out =new ObjectOutputStream(new FileOutputStream(FILE_NAME))) {
 
         out.writeObject(materials);
-
     } catch (IOException e) {
         throw new RuntimeException("Failed to save Mateials", e);
     }

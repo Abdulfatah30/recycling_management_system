@@ -12,19 +12,20 @@ import java.util.ArrayList;
 
 public class ProductService {
    private List<Product> products = new ArrayList<>();
-   private MaterialService materialservice = new MaterialService();
+   private MaterialService materialservice;
    private static final String PRODUCT_FILE = "out/saves/products.dat";
 
-   public ProductService() {
-   loadProductsFromFile();
-
+   public ProductService(MaterialService materialservice) {
+      this.materialservice = materialservice;
+      loadProductsFromFile();
    }
 
    public Product createProduct (String name, String category, int lifespan, List<String> materialNames){
+      loadProductsFromFile();
       List<Material> productMaterials = new ArrayList<>();
 
       for (String materialname : materialNames) {
-         Material material = materialservice.findByMaterialName(materialname);
+         Material material = materialservice.findByMaterialName(materialname.trim());
 
          if(material == null){
             throw new IllegalArgumentException("material not found: " + materialname);
@@ -79,7 +80,7 @@ public class ProductService {
    }
 
    public Product getProductDetails(String name){
-
+      loadProductsFromFile();
     for (Product product : products) {
         if (product.getName().equalsIgnoreCase(name)) {
             return product;
@@ -91,6 +92,7 @@ public class ProductService {
    }
 
    public double calculateImpact (String productName, ImpactCalculationStrategy strategy){
+      
       Product product = getProductDetails(productName);
       if (product == null){
          throw new IllegalArgumentException("Product not found: " + productName);
@@ -101,4 +103,15 @@ public class ProductService {
    public RecyclingGuidance getRecyclingGuidance (String productname){
       return null;
    }
+
+   public Product findByProductName(String name){
+      loadProductsFromFile();
+            for (Product product : products) {
+            if (product.getName().equalsIgnoreCase(name)) {
+                return product;
+            }
+        }
+
+    return null;
+    }
 }
