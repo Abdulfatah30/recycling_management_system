@@ -55,8 +55,7 @@ public class ProductService {
     {out.writeObject(products);
 
     } catch (IOException e) {
-
-        System.err.println("Failed to save products. ERROR: " + e);
+      throw new RuntimeException("Failed to save products", e);
     }
    }
 
