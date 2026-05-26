@@ -2,6 +2,9 @@ package Test;
 import Domain.*;
 import org.junit.jupiter.api.Test;
 
+import Application.ProductService;
+
+import java.beans.Transient;
 import java.util.ArrayList;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -14,8 +17,8 @@ class test {
     void shouldCalculateTotalImpactForSimpleStrategy() {
 
         // Arrange
-        Material plastic = new Material("plastic", 2.5, RecyclingCategory.PLASTIC, "Nothing");
-        Material metal = new Material("metal", 4.5, RecyclingCategory.METAL, "Nothing");
+        Material plastic = new Material("plastic", 2.5, RecyclingCategory.PLASTIC);
+        Material metal = new Material("metal", 4.5, RecyclingCategory.METAL);
 
         List<Material> materials = List.of(plastic, metal);
 
@@ -39,7 +42,7 @@ class test {
     @Test
     void shouldHandleSingleMaterialSimpleStrategy() {
 
-        Material plastic = new Material("plastic", 2.5, RecyclingCategory.PLASTIC, "Nothing");
+        Material plastic = new Material("plastic", 2.5, RecyclingCategory.PLASTIC);
 
         SimpleImpactStrategy strategy = new SimpleImpactStrategy();
 
@@ -52,8 +55,8 @@ class test {
     void shouldCalculateImpactCorrectlyForWeightedStrategy() {
 
         // Arrange
-        Material plastic = new Material("plastic", 2.5, RecyclingCategory.PLASTIC, "Nothing");
-        Material metal = new Material("metal", 4.5, RecyclingCategory.METAL, "Nothing");
+        Material plastic = new Material("plastic", 2.5, RecyclingCategory.PLASTIC);
+        Material metal = new Material("metal", 4.5, RecyclingCategory.METAL);
 
         List<Material> materials = List.of(plastic, metal);
 
@@ -81,7 +84,7 @@ class test {
     @Test
     void shouldHandleSingleMaterialForWeightedStrategy() {
 
-        Material plastic = new Material("plastic", 2.5, RecyclingCategory.PLASTIC, "Nothing");
+        Material plastic = new Material("plastic", 2.5, RecyclingCategory.PLASTIC);
 
         WeightedImpactStrategy strategy = new WeightedImpactStrategy(4);
 
@@ -93,7 +96,7 @@ class test {
     @Test
     void shouldAvoidDivisionByZeroWhenLifespanIsZeroInWeightedStrategy() {
 
-        Material metal = new Material("metal", 4.0, RecyclingCategory.METAL, "Nothing");
+        Material metal = new Material("metal", 4.0, RecyclingCategory.METAL);
 
         WeightedImpactStrategy strategy = new WeightedImpactStrategy(0);
 
@@ -133,7 +136,7 @@ class test {
     // test on Matrial classes 
     @Test
     void shouldReturnMaterialsPassedToProductConstructor() {
-        Material metal = new Material("Steel Frame", 4.0, RecyclingCategory.METAL, "Metal recycling");
+        Material metal = new Material("Steel Frame", 4.0, RecyclingCategory.METAL);
         List<Material> materials = new ArrayList<>(List.of(metal));
         Product product = new Product("Bicycle", "Transport", 10, materials);
 
@@ -146,7 +149,7 @@ class test {
     //RecyclingGuidance class tests
     @Test
     void shouldReturnPlasticGuidanceForSinglePlasticMaterial() {
-        Material plastic = new Material("PET Bottle", 2.0, RecyclingCategory.PLASTIC, "Plastic bin");
+        Material plastic = new Material("PET Bottle", 2.0, RecyclingCategory.PLASTIC);
         Product product = new Product("Bottle", "Container", 1, new ArrayList<>(List.of(plastic)));
         RecyclingGuidance guidance = new RecyclingGuidance();
 
@@ -156,7 +159,7 @@ class test {
     }
     @Test
     void shouldReturnMetalGuidanceForSingleMetalMaterial() {
-        Material metal = new Material("Steel", 4.0, RecyclingCategory.METAL, "Metal recycling");
+        Material metal = new Material("Steel", 4.0, RecyclingCategory.METAL);
         Product product = new Product("Can", "Container", 2, new ArrayList<>(List.of(metal)));
         RecyclingGuidance guidance = new RecyclingGuidance();
 
@@ -167,7 +170,7 @@ class test {
 
     @Test
     void shouldReturnGeneralWasteGuidanceForNonRecyclableMaterial() {
-        Material foam = new Material("Foam", 3.0, RecyclingCategory.NON_RECYCLABLE, "General waste");
+        Material foam = new Material("Foam", 3.0, RecyclingCategory.NON_RECYCLABLE);
         Product product = new Product("Cushion", "Furniture", 5, new ArrayList<>(List.of(foam)));
         RecyclingGuidance guidance = new RecyclingGuidance();
 
@@ -183,5 +186,6 @@ class test {
     String result = guidance.generateGuidance(product);
 
     assertTrue(result.contains("No materials"));
-}
+    }
+
 }

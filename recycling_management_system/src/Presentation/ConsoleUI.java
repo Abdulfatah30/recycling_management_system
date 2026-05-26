@@ -17,6 +17,7 @@ public class ConsoleUI {
     }
     public void start(){
         boolean running = true;
+        
         displayMainMenu();
         while(running){
             System.out.print("\n⮚ Select an option: ");
