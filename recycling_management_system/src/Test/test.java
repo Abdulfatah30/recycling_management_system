@@ -2,7 +2,7 @@ package Test;
 import Domain.*;
 import org.junit.jupiter.api.Test;
 
-import Application.ProductService;
+import Application.*;
 
 import java.beans.Transient;
 import java.util.ArrayList;
