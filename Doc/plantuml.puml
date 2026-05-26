@@ -37,8 +37,8 @@ enum RecyclingCategory {
 }
 
 class RecyclingGuidance {
-  - product : Product
   + generateGuidance(): String
+  - guidanceFor(RecyclingCategory category):String
 }
 
 Product "1" *-- "*" Material
