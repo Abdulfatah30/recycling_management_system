@@ -10,15 +10,47 @@ import Domain.Material;
 import Domain.Product;
 import Domain.RecyclingCategory;
 
+
+
+/**
+ * The presentation layer.
+ * 
+ * ConsoleUI is responsible for showing the menus in the terminal,
+ * handling different inputs, and displaying the corresponding output/messages to the user.
+ */
 public class ConsoleUI {
     private Scanner scanner = new Scanner(System.in);
+
+
+    /** Service used to manage products. */
     private final ProductService productService;
+
+    /** Service used to manage materials. */
     private final MaterialService materialService;
     
+
+    /**
+     * Creates a new ConsoleUI object.
+     * 
+     * The constructor gets injected from Main with materialService
+     * and productService so it does not violate DIP and OCP
+     * 
+     * @param materialService service for material operations
+     * @param productService service for product operations
+     */
     public ConsoleUI(MaterialService materialService, ProductService productService){
         this.productService = productService;
         this.materialService = materialService;
     }
+
+
+    /**
+     * Runs the main menu loop for the console application.
+     * Reads user input, processes menu selections through switch cases,
+     * and triggers the corresponding methods until the user exits.
+     * 
+     * If the user inserts an invalid choice it will display an error message and reset the loop.
+     */
     public void start(){
         boolean running = true;
         
@@ -32,21 +64,24 @@ public class ConsoleUI {
                     controllCreateProduct();
                     break;
                 case "2":
-                    controllListProducts();
+                    controllCreateMaterials();
                     break;
                 case "3":
-                    controllListMaterials();
+                    controllListProducts();
                     break;
                 case "4":
-                    controllProductImpact();
+                    controllListMaterials();
                     break;
                 case "5":
-                    controllRecyclingMenu();
+                    controllProductImpact();
                     break;
                 case "6":
-                    displayMainMenu();
+                    controllRecyclingMenu();
                     break;
                 case "7":
+                    displayMainMenu();
+                    break;
+                case "8":
                     running = false;
                     System.out.println("𝙴𝚡𝚒𝚝𝚒𝚗𝚐 𝚝𝚑𝚎 𝚙𝚛𝚘𝚐𝚛𝚊𝚖...");
                     break;
@@ -55,28 +90,53 @@ public class ConsoleUI {
             }
         }
     }
+
+
+    /**
+     * Displays the main menu of the application in the terminal.
+     * The user can see what choices are available.
+     */
     public void displayMainMenu(){
         System.out.println("\n╭──── ⋅ ⋅ ⋅ ⋅ ⋅ ⋅  ──── ✩ ────  ⋅ ⋅ ⋅ ⋅ ⋅ ⋅ ────╮");
         System.out.println("       ❀ 𝕊𝕌𝕊𝕋𝔸𝕀ℕ𝔸𝔹𝕃𝔼 ℙℝ𝕆𝔻𝕌ℂ𝕋 𝕄𝔸ℕ𝔸𝔾𝔼𝕄𝔼ℕ𝕋 ❀");
         System.out.println("╰──── ⋅ ⋅ ⋅ ⋅ ⋅ ⋅  ──── ✩ ────  ⋅ ⋅ ⋅ ⋅ ⋅ ⋅ ────╯");
         System.out.println("");
         System.out.println("⓵ Create New Product");
-        System.out.println("⓶ List All Products");
-        System.out.println("⓷ List All Materials");
-        System.out.println("⓸ Calculate Environmental Impact");
-        System.out.println("⓹ Recycling Guidance Menu");
-        System.out.println("⓺ Show menu");
-        System.out.println("⓻ ⏻ Exit Application");
+        System.out.println("⓶ Create New Material");
+        System.out.println("⓷ List All Products");
+        System.out.println("⓸ List All Materials");
+        System.out.println("⓹ Calculate Environmental Impact");
+        System.out.println("⓺ Recycling Guidance Menu");
+        System.out.println("⓻ Show menu");
+        System.out.println("⓼ ⏻ Exit Application");
         System.out.println("");
         System.out.println("✧⋄⋆⋅⋆⋄✧⋄⋆⋅⋆⋄✧⋄⋆⋅⋆⋄✧⋄⋆⋅⋆⋄✧⋄⋆⋅⋆⋄✧⋄⋆⋅⋆⋄✧");
     }
 
+
+    /**
+     * Creates a new product using information entered by the user.
+     * 
+     * The user must enter:
+     * - product name
+     * - category
+     * - lifespan
+     * - one or multiple materials
+     * 
+     * If the material does not already exist the user can choose to create it.
+     * It activates the createMaterial method so the user does not have to exit the app
+     * or the menu choice.
+     */
     public void controllCreateProduct() {
     List<String> productMaterials = new ArrayList<>();
 
     System.out.print("Give a product name: ");
     String productname = scanner.nextLine();
 
+
+    /**
+     * This if statment prevents duplicate products because product names must be unique.
+     */
     if(productService.findByProductName(productname) != null){
         System.out.println("Product already exist!!");
         return;
@@ -102,12 +162,18 @@ public class ConsoleUI {
             if(answer.contains("N")){
                 return;
             }
+
+
+            /**
+             * Allows the user to create a new material without
+             * needing to exit the product menu choice.
+             */
             if(answer.contains("C")){
-                productMaterials.add(creatingMatrialIfNeeded().getName().trim());
+                productMaterials.add(controllCreateMaterials().getName().trim());
                 }
             }
         while (true) {
-            System.out.println("Does it have more materials? Y/N: ");
+            System.out.print("Does it have more materials? Y/N: ");
             String answer = scanner.nextLine().trim().toUpperCase();
             switch (answer) {
                 case "Y":
@@ -125,10 +191,16 @@ public class ConsoleUI {
     }
      while (moreMaterial);
         Product product = productService.createProduct(productname, productcategory, productlifespan, productMaterials);
-    System.out.println("successfully created Product '" + product.getName().trim() + "' created with " + product.getMaterials().size() + " material(s).");
+        System.out.println("Successfully created Product '" + product.getName().trim() + "' created with " + product.getMaterials().size() + " material(s).");
     }
 
     
+    /**
+     * Calculates and displays the enviromental impact of a product.
+     * The product must already exist on the list.
+     * 
+     * The user selects which calculation strategy they want to use for that specific product. 
+     */
     public void controllProductImpact() {
     System.out.print("Enter product name: ");
     String name = scanner.nextLine();
@@ -152,9 +224,42 @@ public class ConsoleUI {
     System.out.printf("Environmental impact for %s: %.2f%n", name, impact);
     }
 
-    public void controllRecyclingMenu(){
 
+    /**
+    * The user needs to enter a products name already existing on the list.
+    * This will display a recycling guidance telling the user how the product can be recycled. 
+    */
+    public void controllRecyclingMenu() {
+    System.out.println("\n♻  ─── Recycling Guidance ───  ♻");
+    System.out.print("Enter product name to get recycling guidance (b to get back): ");
+    String name = scanner.nextLine().trim();
+    if(name.equalsIgnoreCase("b")){
+        displayMainMenu();
+        return;
     }
+
+    Product product = productService.getProductDetails(name);
+    if (product == null) {
+        System.out.println("Product not found.\nPlease create it by typing '1' ");
+        return;
+    }
+
+
+    String advice = productService.getRecyclingGuidance(product);
+
+    System.out.println("\n┌─────────────────────────────────────┐");
+    System.out.printf ("│  Product  : %-24s│%n", product.getName().trim());
+    System.out.printf ("│  Category : %-24s│%n", product.getCategory());
+    System.out.printf ("│  Materials: %-24d│%n", product.getMaterials().size());
+    System.out.println("├─────────────────────────────────────┤");
+    System.out.printf ("│  Guidance : %-24s│%n", advice);
+    System.out.println("└─────────────────────────────────────┘");
+    }
+
+
+    /**
+     * A menu displaying diffrent types of recyling categories to choose from.
+     */
     public void recyclingCategoryMenu(){
         System.out.println("""
         1.PLASTIC
@@ -169,14 +274,28 @@ public class ConsoleUI {
         """);
     }
 
-    private Material creatingMatrialIfNeeded() {
+
+    /**
+     * Creates a new material based on user inputs. 
+     * 
+     * The user must enter:
+     * - material name
+     * - environmental impact value
+     * - recycling category
+     * 
+     * @return returns the created material if the creation succeeded or returns null.
+     */
+    private Material controllCreateMaterials() {
         String materialName;
         double impactValue;
         RecyclingCategory materialRecyclingCategory;
         
         System.out.print("Give material name: ");
         materialName = scanner.nextLine().trim();
-        
+        if(materialService.findByMaterialName(materialName) != null){
+            System.out.println("Material already exists!");
+            return null;
+        }
         
         while (true) {
             System.out.print("Enter the impact value: ");
@@ -191,6 +310,7 @@ public class ConsoleUI {
                 scanner.nextLine();
             }
         }
+
         while (true) {
         recyclingCategoryMenu();
         
@@ -209,16 +329,16 @@ public class ConsoleUI {
                 materialRecyclingCategory = RecyclingCategory.METAL;
                 break;
                 
-                case 3:
-                    materialRecyclingCategory = RecyclingCategory.GLASS;
+            case 3:
+                materialRecyclingCategory = RecyclingCategory.GLASS;
                 break;
                     
-                case 4:
+            case 4:
                 materialRecyclingCategory = RecyclingCategory.PAPER;
                 break;
 
-                case 5:
-                    materialRecyclingCategory = RecyclingCategory.ORGANIC;
+            case 5:
+                materialRecyclingCategory = RecyclingCategory.ORGANIC;
                 break;
                 
             case 6:
@@ -228,7 +348,8 @@ public class ConsoleUI {
             case 7:
                 materialRecyclingCategory = RecyclingCategory.HAZARDOUS;
                 break;
-                case 8:
+
+            case 8:
                 materialRecyclingCategory = RecyclingCategory.WOOD;
                 break;
             case 9:
@@ -253,30 +374,60 @@ public class ConsoleUI {
     return null;
     }
 
+
+
+    /**
+     * Displays all materials from the list.
+     * If the list is empty it will print an error message.
+     * 
+     * Each material shows:
+     * - material name
+     * - environmental impact value
+     * - recycling category
+     */
     public void controllListMaterials(){
           List<Material> materials = materialService.listMaterials();
           if (materials.isEmpty()) {
               System.out.println("No material registered yet.");
           return;
           }
+          System.out.println("\n✧⋄⋆⋅⋆⋄✧⋄⋆⋅⋆⋄✧⋄⋆⋅⋆Materials⋆⋅⋆⋄✧⋄⋆⋅⋆⋄✧⋄⋆⋅⋆⋄✧");
           for (Material m : materials) {
-          System.out.printf("  %10s | ImpactValue: %.3f | RecyclingCategory: %s\n", m.getName(), m.getImpactValue(), m.getRecyclingCategory());
+          System.out.printf("  %-15s | ImpactValue: %-12.3f | RecyclingCategory: %-10s\n",
+           m.getName(),
+            m.getImpactValue(),
+             m.getRecyclingCategory());
           }
       }
-      
+    
+
+    /**
+     * Displays all products from the list.
+     * If the list is empty it will print an error message.
+     * 
+     * Each product shows:
+     * - product name
+     * - category
+     * - lifespan
+     * - materials
+     */
     public void controllListProducts(){
           List<Product> products = productService.listProducts();
           if (products.isEmpty()) {
               System.out.println("No products registered yet.");
           return;
           }
+        System.out.println("\n✧⋄⋆⋅⋆⋄✧⋄⋆⋅⋆⋄✧⋄⋆⋅⋆Products⋆⋅⋆⋄✧⋄⋆⋅⋆⋄✧⋄⋆⋅⋆⋄✧");
           for (Product p : products) {
-          System.out.printf("  %-20s | Category: %-15s | Lifespan: %d yr(s) | Materials: %d%n", p.getName(), p.getCategory(), p.getEstimatedLifespanYears(), p.getMaterials().size());
+          System.out.printf("  %-15s | Category: %-15s | Lifespan: %-3d yr(s)  | Materials: ",
+           p.getName(),
+            p.getCategory(),
+             p.getEstimatedLifespanYears());
+
+          for (Material m : p.getMaterials()) {
+            System.out.print("(" + m.getName() + ") ");
+          }
+          System.out.println();
           }
     }
-    public void getProductDetails(Product product){
-  
-      }
-    }
-
-
+}
