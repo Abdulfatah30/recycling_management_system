@@ -32,21 +32,24 @@ public class ConsoleUI {
                     controllCreateProduct();
                     break;
                 case "2":
-                    controllListProducts();
+                    controllCreateMaterials();
                     break;
                 case "3":
-                    controllListMaterials();
+                    controllListProducts();
                     break;
                 case "4":
-                    controllProductImpact();
+                    controllListMaterials();
                     break;
                 case "5":
-                    controllRecyclingMenu();
+                    controllProductImpact();
                     break;
                 case "6":
-                    displayMainMenu();
+                    controllRecyclingMenu();
                     break;
                 case "7":
+                    displayMainMenu();
+                    break;
+                case "8":
                     running = false;
                     System.out.println("𝙴𝚡𝚒𝚝𝚒𝚗𝚐 𝚝𝚑𝚎 𝚙𝚛𝚘𝚐𝚛𝚊𝚖...");
                     break;
@@ -61,12 +64,13 @@ public class ConsoleUI {
         System.out.println("╰──── ⋅ ⋅ ⋅ ⋅ ⋅ ⋅  ──── ✩ ────  ⋅ ⋅ ⋅ ⋅ ⋅ ⋅ ────╯");
         System.out.println("");
         System.out.println("⓵ Create New Product");
-        System.out.println("⓶ List All Products");
-        System.out.println("⓷ List All Materials");
-        System.out.println("⓸ Calculate Environmental Impact");
-        System.out.println("⓹ Recycling Guidance Menu");
-        System.out.println("⓺ Show menu");
-        System.out.println("⓻ ⏻ Exit Application");
+        System.out.println("⓶ Create New Material");
+        System.out.println("⓷ List All Products");
+        System.out.println("⓸ List All Materials");
+        System.out.println("⓹ Calculate Environmental Impact");
+        System.out.println("⓺ Recycling Guidance Menu");
+        System.out.println("⓻ Show menu");
+        System.out.println("⓼ ⏻ Exit Application");
         System.out.println("");
         System.out.println("✧⋄⋆⋅⋆⋄✧⋄⋆⋅⋆⋄✧⋄⋆⋅⋆⋄✧⋄⋆⋅⋆⋄✧⋄⋆⋅⋆⋄✧⋄⋆⋅⋆⋄✧");
     }
@@ -103,7 +107,7 @@ public class ConsoleUI {
                 return;
             }
             if(answer.contains("C")){
-                productMaterials.add(creatingMatrialIfNeeded().getName().trim());
+                productMaterials.add(controllCreateMaterials().getName().trim());
                 }
             }
         while (true) {
@@ -169,14 +173,17 @@ public class ConsoleUI {
         """);
     }
 
-    private Material creatingMatrialIfNeeded() {
+    private Material controllCreateMaterials() {
         String materialName;
         double impactValue;
         RecyclingCategory materialRecyclingCategory;
         
         System.out.print("Give material name: ");
         materialName = scanner.nextLine().trim();
-        
+        if(materialService.findByMaterialName(materialName) != null){
+            System.out.println("Material already exists!");
+            return null;
+        }
         
         while (true) {
             System.out.print("Enter the impact value: ");
@@ -191,6 +198,7 @@ public class ConsoleUI {
                 scanner.nextLine();
             }
         }
+
         while (true) {
         recyclingCategoryMenu();
         
@@ -209,16 +217,16 @@ public class ConsoleUI {
                 materialRecyclingCategory = RecyclingCategory.METAL;
                 break;
                 
-                case 3:
-                    materialRecyclingCategory = RecyclingCategory.GLASS;
+            case 3:
+                materialRecyclingCategory = RecyclingCategory.GLASS;
                 break;
                     
-                case 4:
+            case 4:
                 materialRecyclingCategory = RecyclingCategory.PAPER;
                 break;
 
-                case 5:
-                    materialRecyclingCategory = RecyclingCategory.ORGANIC;
+            case 5:
+                materialRecyclingCategory = RecyclingCategory.ORGANIC;
                 break;
                 
             case 6:
@@ -228,7 +236,8 @@ public class ConsoleUI {
             case 7:
                 materialRecyclingCategory = RecyclingCategory.HAZARDOUS;
                 break;
-                case 8:
+
+            case 8:
                 materialRecyclingCategory = RecyclingCategory.WOOD;
                 break;
             case 9:
@@ -253,14 +262,16 @@ public class ConsoleUI {
     return null;
     }
 
+
     public void controllListMaterials(){
           List<Material> materials = materialService.listMaterials();
           if (materials.isEmpty()) {
               System.out.println("No material registered yet.");
           return;
           }
+          System.out.println("\n✧⋄⋆⋅⋆⋄✧⋄⋆⋅⋆⋄✧⋄⋆⋅⋆Materials⋆⋅⋆⋄✧⋄⋆⋅⋆⋄✧⋄⋆⋅⋆⋄✧");
           for (Material m : materials) {
-          System.out.printf("  %10s | ImpactValue: %.3f | RecyclingCategory: %s\n", m.getName(), m.getImpactValue(), m.getRecyclingCategory());
+          System.out.printf("  %-15s | ImpactValue: %-12.3f | RecyclingCategory: %-10s\n", m.getName(), m.getImpactValue(), m.getRecyclingCategory());
           }
       }
       
@@ -270,8 +281,9 @@ public class ConsoleUI {
               System.out.println("No products registered yet.");
           return;
           }
+        System.out.println("\n✧⋄⋆⋅⋆⋄✧⋄⋆⋅⋆⋄✧⋄⋆⋅⋆Products⋆⋅⋆⋄✧⋄⋆⋅⋆⋄✧⋄⋆⋅⋆⋄✧");
           for (Product p : products) {
-          System.out.printf("  %-20s | Category: %-15s | Lifespan: %d yr(s) | Materials: %d%n", p.getName(), p.getCategory(), p.getEstimatedLifespanYears(), p.getMaterials().size());
+          System.out.printf("  %-15s | Category: %-15s | Lifespan: %-3d yr(s)  | Materials: %-5d\n", p.getName(), p.getCategory(), p.getEstimatedLifespanYears(), p.getMaterials().size());
           }
     }
     public void getProductDetails(Product product){
