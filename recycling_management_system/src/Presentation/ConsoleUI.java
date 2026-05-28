@@ -200,7 +200,7 @@ public class ConsoleUI {
         """);
     }
 
-    private Material controllCreateMaterials() {
+    public Material controllCreateMaterials() {
         String materialName;
         double impactValue;
         RecyclingCategory materialRecyclingCategory;
@@ -317,9 +317,6 @@ public class ConsoleUI {
           System.out.println();
           }
     }
-    public void getProductDetails(Product product){
-  
-      }
     }
 
 

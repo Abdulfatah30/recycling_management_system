@@ -52,7 +52,7 @@ public class ProductService {
     return product;
    }
 
-   public void saveProductsToFile() {
+   private void saveProductsToFile() {
 
     try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(PRODUCT_FILE)))
     {out.writeObject(products);
