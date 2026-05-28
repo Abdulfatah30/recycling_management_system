@@ -93,10 +93,12 @@ entity is coupled to a specific algorithm.
 Adding a third algorithm requires only creating a new class that implements `ImpactCalculationStrategy` and adding one case to `StrategyService`. No existing class changes. Each strategy can be unit-tested independently with any list of
 materials.
 
-## UML 
+## Diagrams
 
 ### Class Diagram
-Link: `Doc/plantuml.puml`
+Link: [UML File for classes](./Doc/plantuml.puml)
+### Sequence Diagram
+Link: [sequence diagram](./Doc/sequence-diagram.puml)
 
 ## Code Testing
 
