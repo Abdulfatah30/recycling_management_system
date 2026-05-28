@@ -3,18 +3,32 @@ import java.util.List;
 public class RecyclingGuidance {
     
     public String generateGuidance(Product product) {
-        List<Material> materials = product.getMaterials();
+       List<Material> materials = product.getMaterials();
+       if (materials.isEmpty()){
+        return "No materials! Recycling guidance can not be provided.";
+       }
+       if (materials.size() == 1){
+        Material material = materials.get(0);
+        return guidanceFor(material.getRecyclingCategory());
+       }
 
-        if (materials.isEmpty()) {
-            return "No materials — no recycling guidance available.";
-        }
+       Material dominantMaterial = materials.get(0);
+       boolean equalImpact = true;
 
-        StringBuilder guidance = new StringBuilder();
-        for (Material m : materials) {
-            guidance.append(guidanceFor(m.getRecyclingCategory()));
-            guidance.append(" ");
+       for(Material material : materials){
+        if ( material.getImpactValue() > dominantMaterial.getImpactValue()){
+        dominantMaterial = material;
         }
-        return guidance.toString().trim();
+        if (material.getImpactValue() != materials.get(0).getImpactValue()){
+            equalImpact = false;
+        }
+       }
+       if (equalImpact){
+        return "Mixed-material product. Take to general waste!";
+        
+       }
+
+       return guidanceFor(dominantMaterial.getRecyclingCategory());
     }
 
     private String guidanceFor(RecyclingCategory category) {

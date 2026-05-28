@@ -1,8 +1,9 @@
 package Domain;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Product {
+public class Product implements Serializable{
     private String name;
     private String category;
     private int lifespan;
@@ -37,7 +38,7 @@ public double calculateImpact(ImpactCalculationStrategy strategy) {
     return strategy.calculateImpact(this.materials);
 }
 
-public RecyclingGuidance getRecyclingGuidance() {
-    return null;
+public String getRecyclingGuidance(Product product, RecyclingGuidance guidance) {
+    return guidance.generateGuidance(product);
 }
 }
