@@ -9,6 +9,7 @@ import Domain.ImpactCalculationStrategy;
 import Domain.Material;
 import Domain.Product;
 import Domain.RecyclingCategory;
+import Domain.RecyclingGuidance;
 
 public class ConsoleUI {
     private Scanner scanner = new Scanner(System.in);
@@ -152,9 +153,32 @@ public class ConsoleUI {
     System.out.printf("Environmental impact for %s: %.2f%n", name, impact);
     }
 
-    public void controllRecyclingMenu(){
 
+
+    public void controllRecyclingMenu() {
+    System.out.println("\n♻  ─── Recycling Guidance ───");
+    System.out.print("Enter product name to get recycling guidance: ");
+    String name = scanner.nextLine().trim();
+
+    Product product = productService.getProductDetails(name);
+    if (product == null) {
+        System.out.println("Product not found.");
+        return;
     }
+
+    RecyclingGuidance guidance = new RecyclingGuidance();
+    String advice = guidance.generateGuidance(product);
+
+    System.out.println("\n┌─────────────────────────────────────┐");
+    System.out.printf ("│  Product  : %-24s│%n", product.getName().trim());
+    System.out.printf ("│  Category : %-24s│%n", product.getCategory());
+    System.out.printf ("│  Materials: %-24d│%n", product.getMaterials().size());
+    System.out.println("├─────────────────────────────────────┤");
+    System.out.printf ("│  Guidance : %-24s│%n", advice);
+    System.out.println("└─────────────────────────────────────┘");
+    }
+
+
     public void recyclingCategoryMenu(){
         System.out.println("""
         1.PLASTIC
@@ -271,7 +295,11 @@ public class ConsoleUI {
           return;
           }
           for (Product p : products) {
-          System.out.printf("  %-20s | Category: %-15s | Lifespan: %d yr(s) | Materials: %d%n", p.getName(), p.getCategory(), p.getEstimatedLifespanYears(), p.getMaterials().size());
+          System.out.printf("  %-20s | Category: %-15s | Lifespan: %d yr(s) | Materials: ", p.getName(), p.getCategory(), p.getEstimatedLifespanYears());
+            for (Material m : p.getMaterials()) {
+            System.out.print("(" + m.getName() + ") ");
+            }
+            System.out.println();
           }
     }
     public void getProductDetails(Product product){
