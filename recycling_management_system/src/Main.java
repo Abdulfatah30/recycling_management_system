@@ -7,7 +7,8 @@ public class Main {
     public static void main(String[] args) throws Exception {
         
         MaterialService materialService = new MaterialService();
-        ProductService productService = new ProductService(materialService);
+        RecyclingGuidance guidance = new RecyclingGuidance();
+        ProductService productService = new ProductService(materialService, guidance);
         ConsoleUI ui = new ConsoleUI(materialService,  productService);
         ui.start();
     }

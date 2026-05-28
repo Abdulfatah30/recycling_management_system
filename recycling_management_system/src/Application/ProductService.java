@@ -13,10 +13,12 @@ import java.util.ArrayList;
 public class ProductService {
    private List<Product> products = new ArrayList<>();
    private MaterialService materialservice;
+   private RecyclingGuidance guidance;
    private static final String PRODUCT_FILE = "out/saves/products.dat";
 
-   public ProductService(MaterialService materialservice) {
+   public ProductService(MaterialService materialservice, RecyclingGuidance guidance) {
       this.materialservice = materialservice;
+      this.guidance = guidance;
       loadProductsFromFile();
    }
 
@@ -100,8 +102,8 @@ public class ProductService {
       return product.calculateImpact(strategy);
    }
 
-   public RecyclingGuidance getRecyclingGuidance (String productname){
-      return null;
+   public String getRecyclingGuidance (Product product){
+      return guidance.generateGuidance(product);
    }
 
    public Product findByProductName(String name){

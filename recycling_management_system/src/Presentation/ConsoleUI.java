@@ -9,7 +9,6 @@ import Domain.ImpactCalculationStrategy;
 import Domain.Material;
 import Domain.Product;
 import Domain.RecyclingCategory;
-import Domain.RecyclingGuidance;
 
 public class ConsoleUI {
     private Scanner scanner = new Scanner(System.in);
@@ -112,7 +111,7 @@ public class ConsoleUI {
                 }
             }
         while (true) {
-            System.out.println("Does it have more materials? Y/N: ");
+            System.out.print("Does it have more materials? Y/N: ");
             String answer = scanner.nextLine().trim().toUpperCase();
             switch (answer) {
                 case "Y":
@@ -160,18 +159,22 @@ public class ConsoleUI {
 
 
     public void controllRecyclingMenu() {
-    System.out.println("\n♻  ─── Recycling Guidance ───");
-    System.out.print("Enter product name to get recycling guidance: ");
+    System.out.println("\n♻  ─── Recycling Guidance ───♻");
+    System.out.print("Enter product name to get recycling guidance (b to get back): ");
     String name = scanner.nextLine().trim();
-
-    Product product = productService.getProductDetails(name);
-    if (product == null) {
-        System.out.println("Product not found.");
+    if(name.equalsIgnoreCase("b")){
+        displayMainMenu();
         return;
     }
 
-    RecyclingGuidance guidance = new RecyclingGuidance();
-    String advice = guidance.generateGuidance(product);
+    Product product = productService.getProductDetails(name);
+    if (product == null) {
+        System.out.println("Product not found.\nPlease create it by typing '1' ");
+        return;
+    }
+
+
+    String advice = productService.getRecyclingGuidance(product);
 
     System.out.println("\n┌─────────────────────────────────────┐");
     System.out.printf ("│  Product  : %-24s│%n", product.getName().trim());
@@ -307,7 +310,11 @@ public class ConsoleUI {
           }
         System.out.println("\n✧⋄⋆⋅⋆⋄✧⋄⋆⋅⋆⋄✧⋄⋆⋅⋆Products⋆⋅⋆⋄✧⋄⋆⋅⋆⋄✧⋄⋆⋅⋆⋄✧");
           for (Product p : products) {
-          System.out.printf("  %-15s | Category: %-15s | Lifespan: %-3d yr(s)  | Materials: %-5d\n", p.getName(), p.getCategory(), p.getEstimatedLifespanYears(), p.getMaterials().size());
+          System.out.printf("  %-15s | Category: %-15s | Lifespan: %-3d yr(s)  | Materials: ", p.getName(), p.getCategory(), p.getEstimatedLifespanYears());
+          for (Material m : p.getMaterials()) {
+            System.out.print("(" + m.getName() + ") ");
+          }
+          System.out.println();
           }
     }
     public void getProductDetails(Product product){
