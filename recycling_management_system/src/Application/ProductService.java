@@ -103,7 +103,7 @@ public class ProductService {
    }
 
    public String getRecyclingGuidance (Product product){
-      return guidance.generateGuidance(product);
+      return product.getRecyclingGuidance(product, guidance);
    }
 
    public Product findByProductName(String name){

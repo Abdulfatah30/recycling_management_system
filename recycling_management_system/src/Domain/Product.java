@@ -38,7 +38,7 @@ public double calculateImpact(ImpactCalculationStrategy strategy) {
     return strategy.calculateImpact(this.materials);
 }
 
-public RecyclingGuidance getRecyclingGuidance() {
-    return null;
+public String getRecyclingGuidance(Product product, RecyclingGuidance guidance) {
+    return guidance.generateGuidance(product);
 }
 }
