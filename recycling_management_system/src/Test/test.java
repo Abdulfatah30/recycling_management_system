@@ -134,7 +134,7 @@ class test {
     }
 
     @Test
-    void shouldIncreaseMatrialCountWhenMaterialIsAdded() {
+    void shouldIncreaseMaterialCountWhenMaterialIsAdded() {
         Product product = new Product("Phone", "Electronics", 3, new ArrayList<>());
         Material plastic = new Material("Plastic Shell", 1.5, RecyclingCategory.PLASTIC);
 
@@ -154,7 +154,7 @@ class test {
         assertEquals(4.0, result);
     }
 
-    // tests on Matrial classes 
+    // tests on material classes 
     @Test
     void shouldReturnMaterialsPassedToProductConstructor() {
         Material metal = new Material("Steel Frame", 4.0, RecyclingCategory.METAL);
