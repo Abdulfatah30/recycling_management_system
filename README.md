@@ -96,7 +96,7 @@ materials.
 ## UML 
 
 ### Class Diagram
-Link: `Doc/plantuml.puml`
+Link: [PlantUML File](./Doc/plantuml.puml)
 
 ## Code Testing
 
