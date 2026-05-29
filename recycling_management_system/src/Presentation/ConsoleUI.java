@@ -137,7 +137,7 @@ public class ConsoleUI {
     /**
      * This if statment prevents duplicate products because product names must be unique.
      */
-    if(productService.findByProductName(productname) != null){
+    if(productService.getProductDetails(productname) != null){
         System.out.println("Product already exist!!");
         return;
     }
@@ -247,14 +247,15 @@ public class ConsoleUI {
 
     String advice = productService.getRecyclingGuidance(product);
 
-    System.out.println("\n┌─────────────────────────────────────┐");
+    System.out.println("\n┌"+"─".repeat(45)+"┐");
     System.out.printf ("│  Product  : %-24s│%n", product.getName().trim());
     System.out.printf ("│  Category : %-24s│%n", product.getCategory());
     System.out.printf ("│  Materials: %-24d│%n", product.getMaterials().size());
-    System.out.println("├─────────────────────────────────────┤");
+    System.out.println("├"+"─".repeat(45)+"┤");
     System.out.printf ("│  Guidance : %-24s│%n", advice);
-    System.out.println("└─────────────────────────────────────┘");
+    System.out.println("└"+"─".repeat(45)+"┘");
     }
+
 
 
     /**

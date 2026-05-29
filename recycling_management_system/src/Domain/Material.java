@@ -13,6 +13,7 @@ import java.io.Serializable;
  * This class is serializable so material objects can be saved to files.
 */
 public class Material implements Serializable {
+    private static final long serialVersionUID = 1L; // fixed ID so save files stay valid after code changes
     private String name;
     private double impactValue;
     private RecyclingCategory recyclingCategory;
