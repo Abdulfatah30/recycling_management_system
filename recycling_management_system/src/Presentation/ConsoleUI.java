@@ -137,7 +137,7 @@ public class ConsoleUI {
     /**
      * This if statment prevents duplicate products because product names must be unique.
      */
-    if(productService.findByProductName(productname) != null){
+    if(productService.getProductDetails(productname) != null){
         System.out.println("Product already exist!!");
         return;
     }

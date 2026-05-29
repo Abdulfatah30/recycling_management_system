@@ -31,6 +31,7 @@ public class ProductService {
    private MaterialService materialservice;
 
    private static final String PRODUCT_FILE = "out/saves/products.dat";
+   private RecyclingGuidance guidance;
 
 
 
@@ -41,7 +42,7 @@ public class ProductService {
     * 
     * @param materialservice service used to access existing materials
     */
-   public ProductService(MaterialService materialservice) {
+   public ProductService(MaterialService materialservice, RecyclingGuidance guidance) {
       this.materialservice = materialservice;
       this.guidance = guidance;
       loadProductsFromFile();
@@ -196,4 +197,6 @@ public class ProductService {
     */
    public String getRecyclingGuidance (Product product){
       return product.getRecyclingGuidance(product, guidance);
+}
+
 }
