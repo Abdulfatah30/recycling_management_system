@@ -315,7 +315,7 @@ class test {
         MaterialService materialService = new MaterialService();
         ProductService productService = new ProductService(materialService, new RecyclingGuidance());
 
-        Product result = productService.findByProductName("nonexistent");
+        Product result = productService.getProductDetails("nonexistent");
 
         assertEquals(null, result);
     }
