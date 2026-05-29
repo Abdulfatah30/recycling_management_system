@@ -13,6 +13,8 @@ import Domain.RecyclingCategory;
 
 
 /** 
+ * Application layer
+ * 
  * Service class responsible for managing materials in the system.
  *
  * This class handles: 
