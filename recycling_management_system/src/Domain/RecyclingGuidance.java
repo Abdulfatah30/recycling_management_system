@@ -1,7 +1,26 @@
 package Domain;
 import java.util.List;
+
+
+/**
+ * Domain layer
+ * 
+ * Provides recycling guidance for products based on their materials.
+ * 
+ * This class is responsible for:
+ * - analyzing product materials
+ * - identifying the dominant material
+ * - generating suitable recycling instructions
+ */
 public class RecyclingGuidance {
     
+
+
+    /**
+     * Generates recycling guidance for a product.
+     * 
+     * @return a recycling instruction as a String.
+     */
     public String generateGuidance(Product product) {
        List<Material> materials = product.getMaterials();
        if (materials.isEmpty()){
@@ -31,6 +50,13 @@ public class RecyclingGuidance {
        return guidanceFor(dominantMaterial.getRecyclingCategory());
     }
 
+
+
+    /**
+     * Returns recycling guidance based on the recycling category.
+     * 
+     * @return recycling instruction as a String.
+     */
     private String guidanceFor(RecyclingCategory category) {
         switch (category) {
             case PLASTIC:        return "Recycle in plastic bin.";
