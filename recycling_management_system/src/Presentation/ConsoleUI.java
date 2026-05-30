@@ -115,77 +115,7 @@ public class ConsoleUI {
 
 
 
-        /**
-         * Validates a string input from the user.
-         *
-         * Keeps asking until the user enters a non-empty value.
-         *
-         * @param message prompt message shown to the user
-         * @param errorMessage message shown when input is empty
-         * @return a valid non-empty string input
-         */
-        public String validateString(String message, String errorMessage) {
-            while (true) {
-                System.out.print(message);
-                String input = scanner.nextLine().trim();
-
-                if (input.isEmpty()) {
-                    System.err.println(errorMessage);
-                    continue;
-                }
-
-                return input;
-            }
-        }
-
-
-
-        /**
-         * Validates an integer input from the user.
-         *
-         * Keeps asking until the user enters a valid integer value.
-         *
-         * @param message prompt message shown to the user
-         * @param errorMessage message shown when input is not a valid integer
-         * @return a valid integer value
-         */
-        public int validateInt(String message, String errorMessage) {
-            while (true) {
-                System.out.print(message);
-                String input = scanner.nextLine().trim();
-
-                try {
-                    return Integer.parseInt(input);
-                } catch (NumberFormatException e) {
-                    System.err.println(errorMessage);
-                }
-            }
-        }
-
-
-        /**
-         * Validates a double (decimal number) input from the user.
-         *
-         * Keeps asking until the user enters a valid decimal number.
-         *
-         * @param message prompt message shown to the user
-         * @param errorMessage message shown when input is not a valid number
-         * @return a valid double value
-         */
-        public double validateDouble(String message, String errorMessage) {
-            while (true) {
-                System.out.print(message);
-                String input = scanner.nextLine().trim();
-
-                try {
-                    return Double.parseDouble(input);
-                } catch (NumberFormatException e) {
-                    System.err.println(errorMessage);
-                }
-            }
-        }
-
-/**
+    /**
      * Creates a new product using information entered by the user.
      * 
      * The user must enter:
@@ -258,94 +188,9 @@ public class ConsoleUI {
         System.out.println("Successfully created Product '" + product.getName().trim() + "' created with " + product.getMaterials().size() + " material(s).");
     }
 
-    
-    /**
-     * Calculates and displays the enviromental impact of a product.
-     * The product must already exist on the list.
-     * 
-     * The user selects which calculation strategy they want to use for that specific product. 
-     */
-    public void controllProductImpact() {
-    String name = validateString("Enter product name: ", "Product can't be empty!!");
-
-    System.out.println("Choose a calculation strategy:");
-    System.out.println("  1. Simple (sum of material impacts)");
-    System.out.println("  2. Weighted (adjusted for product lifespan)");
-    int choice = validateInt("Your choice: ", "Please enter a valid integer!!");
-    while (true) {
-        
-        if(choice != 1 && choice != 2){
-            System.err.println("Please enter a valid integer!!");
-            choice = validateInt("Your choice: ", "Please enter a valid integer!!");
-            continue;
-        }
-        break;
-    }
-
-    Product product = productService.getProductDetails(name);
-    if (product == null) {
-        System.out.println("Product not found.");
-        return;
-    }
-    
-    ImpactCalculationStrategy strategy = StrategyService.create(choice, product.getEstimatedLifespanYears());
-    double impact = productService.calculateImpact(name, strategy);
-    
-    System.out.printf("Environmental impact for %s: %.2f%n", name, impact);
-    }
 
 
-    /**
-    * The user needs to enter a products name already existing on the list.
-    * This will display a recycling guidance telling the user how the product can be recycled. 
-    */
-    public void controllRecyclingMenu() {
-    System.out.println("\n♻  ─── Recycling Guidance ───  ♻");
-    String name = validateString("Enter product name to get recycling guidance (b to get back): ", "Product can't be empty!!").trim();
-    if(name.equalsIgnoreCase("b")){
-        displayMainMenu();
-        return;
-    }
-
-    Product product = productService.getProductDetails(name);
-    if (product == null) {
-        System.out.println("Product not found.\nPlease create it by typing '1' ");
-        return;
-    }
-
-
-    String advice = productService.getRecyclingGuidance(product);
-
-    System.out.println("\n┌"+"─".repeat(45)+"┐");
-    System.out.printf ("│  Product  : %-32s│%n", product.getName().trim());
-    System.out.printf ("│  Category : %-32s│%n", product.getCategory());
-    System.out.printf ("│  Materials: %-32d│%n", product.getMaterials().size());
-    System.out.println("├"+"─".repeat(45)+"┤");
-    System.out.printf ("│  Guidance : %-32s│%n", advice);
-    System.out.println("└"+"─".repeat(45)+"┘");
-    }
-
-
-
-    /**
-     * A menu displaying diffrent types of recyling categories to choose from.
-     */
-    public void recyclingCategoryMenu(){
-        System.out.println("""
-        1.PLASTIC
-        2.METAL
-        3.GLASS
-        4.PAPER
-        5.ORGANIC
-        6.ELECTRONIC
-        7.HAZARDOUS
-        8.WOOD
-        9.NON_RECYCLABLE
-        """);
-    }
-
-
-    /**
+        /**
      * Creates a new material based on user inputs. 
      * 
      * The user must enter:
@@ -430,31 +275,6 @@ public class ConsoleUI {
 
 
     /**
-     * Displays all materials from the list.
-     * If the list is empty it will print an error message.
-     * 
-     * Each material shows:
-     * - material name
-     * - environmental impact value
-     * - recycling category
-     */
-    public void controllListMaterials(){
-          List<Material> materials = materialService.listMaterials();
-          if (materials.isEmpty()) {
-              System.out.println("No material registered yet.");
-          return;
-          }
-          System.out.println("\n✧⋄⋆⋅⋆⋄✧⋄⋆⋅⋆⋄✧⋄⋆⋅⋆Materials⋆⋅⋆⋄✧⋄⋆⋅⋆⋄✧⋄⋆⋅⋆⋄✧");
-          for (Material m : materials) {
-          System.out.printf("  %-25s | ImpactValue: %-14f | RecyclingCategory: %-10s\n",
-           m.getName(),
-            m.getImpactValue(),
-             m.getRecyclingCategory());
-          }
-      }
-    
-
-    /**
      * Displays all products from the list.
      * If the list is empty it will print an error message.
      * 
@@ -483,4 +303,191 @@ public class ConsoleUI {
           System.out.println();
           }
     }
+    
+    
+    
+    /**
+     * Displays all materials from the list.
+     * If the list is empty it will print an error message.
+     * 
+     * Each material shows:
+     * - material name
+     * - environmental impact value
+     * - recycling category
+     */
+    public void controllListMaterials(){
+        List<Material> materials = materialService.listMaterials();
+          if (materials.isEmpty()) {
+              System.out.println("No material registered yet.");
+              return;
+          }
+          System.out.println("\n✧⋄⋆⋅⋆⋄✧⋄⋆⋅⋆⋄✧⋄⋆⋅⋆Materials⋆⋅⋆⋄✧⋄⋆⋅⋆⋄✧⋄⋆⋅⋆⋄✧");
+          for (Material m : materials) {
+          System.out.printf("  %-25s | ImpactValue: %-14f | RecyclingCategory: %-10s\n",
+           m.getName(),
+           m.getImpactValue(),
+             m.getRecyclingCategory());
+          }
+      }
+
+
+      
+      /**
+       * A menu displaying diffrent types of recyling categories to choose from.
+       */
+      public void recyclingCategoryMenu(){
+          System.out.println("""
+          1.PLASTIC
+          2.METAL
+          3.GLASS
+          4.PAPER
+          5.ORGANIC
+          6.ELECTRONIC
+          7.HAZARDOUS
+          8.WOOD
+          9.NON_RECYCLABLE
+          """);
+      }
+      
+      
+      
+    /**
+     * Calculates and displays the enviromental impact of a product.
+     * The product must already exist on the list.
+     * 
+     * The user selects which calculation strategy they want to use for that specific product. 
+     */
+    public void controllProductImpact() {
+    String name = validateString("Enter product name: ", "Product can't be empty!!");
+
+    System.out.println("Choose a calculation strategy:");
+    System.out.println("  1. Simple (sum of material impacts)");
+    System.out.println("  2. Weighted (adjusted for product lifespan)");
+    int choice = validateInt("Your choice: ", "Please enter a valid integer!!");
+    while (true) {
+        
+        if(choice != 1 && choice != 2){
+            System.err.println("Please enter a valid integer!!");
+            choice = validateInt("Your choice: ", "Please enter a valid integer!!");
+            continue;
+        }
+        break;
+    }
+
+    Product product = productService.getProductDetails(name);
+    if (product == null) {
+        System.out.println("Product not found.");
+        return;
+    }
+    
+    ImpactCalculationStrategy strategy = StrategyService.create(choice, product.getEstimatedLifespanYears());
+    double impact = productService.calculateImpact(name, strategy);
+    
+    System.out.printf("Environmental impact for %s: %.2f%n", name, impact);
+    }
+
+
+
+    /**
+    * The user needs to enter a products name already existing on the list.
+    * This will display a recycling guidance telling the user how the product can be recycled. 
+    */
+    public void controllRecyclingMenu() {
+    System.out.println("\n♻  ─── Recycling Guidance ───  ♻");
+    String name = validateString("Enter product name to get recycling guidance (b to get back): ", "Product can't be empty!!").trim();
+    if(name.equalsIgnoreCase("b")){
+        displayMainMenu();
+        return;
+    }
+
+    Product product = productService.getProductDetails(name);
+    if (product == null) {
+        System.out.println("Product not found.\nPlease create it by typing '1' ");
+        return;
+    }
+
+
+    String advice = productService.getRecyclingGuidance(product);
+
+    System.out.println("\n┌"+"─".repeat(45)+"┐");
+    System.out.printf ("│  Product  : %-32s│%n", product.getName().trim());
+    System.out.printf ("│  Category : %-32s│%n", product.getCategory());
+    System.out.printf ("│  Materials: %-32d│%n", product.getMaterials().size());
+    System.out.println("├"+"─".repeat(45)+"┤");
+    System.out.printf ("│  Guidance : %-32s│%n", advice);
+    System.out.println("└"+"─".repeat(45)+"┘");
+    }
+    
+        /**
+         * Validates a string input from the user.
+         *
+         * Keeps asking until the user enters a non-empty value.
+         *
+         * @param message prompt message shown to the user
+         * @param errorMessage message shown when input is empty
+         * @return a valid non-empty string input
+         */
+        public String validateString(String message, String errorMessage) {
+            while (true) {
+                System.out.print(message);
+                String input = scanner.nextLine().trim();
+
+                if (input.isEmpty()) {
+                    System.err.println(errorMessage);
+                    continue;
+                }
+
+                return input;
+            }
+        }
+
+
+
+        /**
+         * Validates an integer input from the user.
+         *
+         * Keeps asking until the user enters a valid integer value.
+         *
+         * @param message prompt message shown to the user
+         * @param errorMessage message shown when input is not a valid integer
+         * @return a valid integer value
+         */
+        public int validateInt(String message, String errorMessage) {
+            while (true) {
+                System.out.print(message);
+                String input = scanner.nextLine().trim();
+
+                try {
+                    return Integer.parseInt(input);
+                } catch (NumberFormatException e) {
+                    System.err.println(errorMessage);
+                }
+            }
+        }
+
+
+        /**
+         * Validates a double (decimal number) input from the user.
+         *
+         * Keeps asking until the user enters a valid decimal number.
+         *
+         * @param message prompt message shown to the user
+         * @param errorMessage message shown when input is not a valid number
+         * @return a valid double value
+         */
+        public double validateDouble(String message, String errorMessage) {
+            while (true) {
+                System.out.print(message);
+                String input = scanner.nextLine().trim();
+
+                try {
+                    return Double.parseDouble(input);
+                } catch (NumberFormatException e) {
+                    System.err.println(errorMessage);
+                }
+            }
+        }
+
+
+
 }
