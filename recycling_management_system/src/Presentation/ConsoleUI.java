@@ -394,7 +394,7 @@ public class ConsoleUI {
           }
           System.out.println("\n✧⋄⋆⋅⋆⋄✧⋄⋆⋅⋆⋄✧⋄⋆⋅⋆Materials⋆⋅⋆⋄✧⋄⋆⋅⋆⋄✧⋄⋆⋅⋆⋄✧");
           for (Material m : materials) {
-          System.out.printf("  %-15s | ImpactValue: %-12.3f | RecyclingCategory: %-10s\n",
+          System.out.printf("  %-25s | ImpactValue: %-14f | RecyclingCategory: %-10s\n",
            m.getName(),
             m.getImpactValue(),
              m.getRecyclingCategory());
