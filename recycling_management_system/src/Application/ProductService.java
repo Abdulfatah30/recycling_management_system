@@ -128,7 +128,17 @@ public class ProductService {
       }
 
       try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))) {
-         products = (List<Product>) in.readObject();
+         Object raw = in.readObject();
+         if (raw instanceof List<?> list) {
+            for (Object item : list) {
+               if (!(item instanceof Product)) {
+                  throw new RuntimeException("Unexpected type in products file");
+               }
+            }
+            @SuppressWarnings("unchecked")
+            List<Product> loaded = (List<Product>) raw;
+            products = loaded;
+         }
       } catch (IOException | ClassNotFoundException e) {
          throw new RuntimeException("Failed to load products", e);
       }

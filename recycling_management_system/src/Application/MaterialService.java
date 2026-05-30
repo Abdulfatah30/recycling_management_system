@@ -8,6 +8,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import Domain.Material;
+import Domain.Product;
 import Domain.RecyclingCategory;
 
 
@@ -137,7 +138,17 @@ public class MaterialService {
         }
 
         try (ObjectInputStream in =new ObjectInputStream(new FileInputStream(FILE_NAME))) {
-            materials = (List<Material>) in.readObject();
+            Object raw = in.readObject();
+            if (raw instanceof List<?> list) {
+                for (Object item : list) {
+                    if (!(item instanceof Material)) {
+                        throw new RuntimeException("Unexpected type in products file");
+                    }
+                }
+                @SuppressWarnings("unchecked")
+                List<Material> loaded = (List<Material>) raw;
+                materials = loaded;
+            }
 
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException("Failed to load materials", e);
