@@ -112,6 +112,8 @@ src/
 
 ### Design Reflection
 [Read reflection](./Doc/Design_reflection.md)
+### Week 9 refactoring doc
+[Read refatoring week 9](./Doc/refactoring-week9.md)
 ## How to Build and Run
 
 ### Prerequisites
