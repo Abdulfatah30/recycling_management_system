@@ -111,7 +111,7 @@ src/
 [View PlantUML source](./Doc/sequence-diagram.puml)
 
 ### Design Reflection
-[Read reflection](./Doc/Desgin_reflection.md)
+[Read reflection](./Doc/Design_reflection.md)
 ## How to Build and Run
 
 ### Prerequisites
