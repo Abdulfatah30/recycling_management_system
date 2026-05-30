@@ -128,11 +128,20 @@ public class ConsoleUI {
      * or the menu choice.
      */
     public void controllCreateProduct() {
-    List<String> productMaterials = new ArrayList<>();
+    int productlifespan;
+    String productcategory;
+    String productname;
+        List<String> productMaterials = new ArrayList<>();
+    while (true) {
 
-    System.out.print("Give a product name: ");
-    String productname = scanner.nextLine();
-
+        System.out.print("Give a product name: ");
+        productname = scanner.nextLine();
+        if(productname.isEmpty()){
+            System.err.println("Please enter a product name!");
+            continue;
+        }
+        break;
+    }
 
     /**
      * This if statment prevents duplicate products because product names must be unique.
@@ -141,12 +150,27 @@ public class ConsoleUI {
         System.out.println("Product already exist!!");
         return;
     }
-
-    System.out.print("Give a category name: ");
-    String productcategory = scanner.nextLine();
-
-    System.out.print("Give a lifespan value: ");
-    int productlifespan = Integer.parseInt(scanner.nextLine());
+    while (true) {
+        System.out.print("Give a category name: ");
+        productcategory = scanner.nextLine();
+        if(productcategory.isEmpty()){
+            System.err.println("Please enter a category name!");
+            continue;
+        }
+        break;
+    }
+    
+    while (true) {
+        System.out.print("Give a lifespan value: ");
+        try {
+        productlifespan= Integer.parseInt(scanner.nextLine());
+            
+        } catch (Exception e) {
+            System.err.println("Please enter an integer!");
+            continue;
+        }
+        break;
+    }
 
     boolean moreMaterial = true;
     do {
