@@ -1,28 +1,30 @@
 @startuml
+package "Domain Layer"{
+
 
 class Product {
   - name : String
   - category : String
   - lifespan : int
   - materials : List<Material>
+  + Product(name : String, category : String, lifespan : int, materials : List<Material>)
   + getName() : String
   + getCategory() : String
   + getEstimatedLifespanYears() : int
   + getMaterials() : List<Material>
   + addMaterial(material : Material) : void
   + calculateImpact(strategy : ImpactCalculationStrategy) : double
-  + getRecyclingGuidance() : RecyclingGuidance
+  + getRecyclingGuidance(product : Product, guidance : RecyclingGuidance) : String
 }
 
 class Material {
   - name : String
   - impactValue : double
   - recyclingCategory : RecyclingCategory
-  - recyclingInstruction : String
+  + Material(name : String, impactValue : double, category : RecyclingCategory)
   + getName() : String
   + getImpactValue() : double
   + getRecyclingCategory() : RecyclingCategory
-  + getRecyclingInstruction() : String
 }
 
 enum RecyclingCategory {
@@ -34,54 +36,75 @@ enum RecyclingCategory {
   ELECTRONIC
   HAZARDOUS
   NON_RECYCLABLE
+  WOOD
 }
 
 class RecyclingGuidance {
-  - product : Product
-  + generateGuidance(): String
+  + generateGuidance(product : Product) : String
+  - guidanceFor(category : RecyclingCategory) : String
 }
 
-Product "1" *-- "*" Material
+Product "0" *-- "*" Material
 Material --> RecyclingCategory
-RecyclingGuidance "1" o-- "1" Product
+RecyclingGuidance ..> Product
+RecyclingGuidance ..> RecyclingCategory
+
 
 
 interface ImpactCalculationStrategy {
   + calculateImpact(materials : List<Material>) : double
 }
 
-class Strategy_1 {
+class SimpleImpactStrategy {
   + calculateImpact(materials : List<Material>) : double
 }
 
-class Strategy_2 {
+class WeightedImpactStrategy {
+  - lifespan : int
+  + WeightedImpactStrategy(lifespan : int)
   + calculateImpact(materials : List<Material>) : double
 }
 
-ImpactCalculationStrategy <|.. Strategy_1
-ImpactCalculationStrategy <|.. Strategy_2
-
+ImpactCalculationStrategy <|.. SimpleImpactStrategy
+ImpactCalculationStrategy <|.. WeightedImpactStrategy
+}
+package "Application Layer"{
 
 class ProductService {
   - products : List<Product>
-  - materialService : MaterialService
+  - materialservice : MaterialService
+  - guidance : RecyclingGuidance
   + createProduct(name : String, category : String, lifespan : int, materialNames : List<String>) : Product
   + listProducts() : List<Product>
   + getProductDetails(name : String) : Product
+  + findByProductName(name : String) : Product
   + calculateImpact(productName : String, strategy : ImpactCalculationStrategy) : double
-  + getRecyclingGuidance(productName : String) : RecyclingGuidance
+  + getRecyclingGuidance(product : Product) : String
+  - saveProductsToFile() : void
+  - loadProductsFromFile() : void
 }
 
 class MaterialService {
   - materials : List<Material>
-  + getMaterial(name : String) : Material
   + listMaterials() : List<Material>
   + findByMaterialName(name : String) : Material
+  + createMaterial(name : String, impactValue : double, category : RecyclingCategory) : Material
+  + saveMaterialsToFile() : void
+  + loadMaterialsFromFile() : void
 }
 
-ProductService --> ImpactCalculationStrategy
+class StrategyService {
+  + {static} create(choice : int, lifespanYears : int) : ImpactCalculationStrategy
+}
+
 ProductService ..> Product
 ProductService --> MaterialService
+StrategyService ..> ImpactCalculationStrategy
+
+}
+
+
+package "Presentation Layer"{
 
 
 class ConsoleUI {
@@ -91,14 +114,16 @@ class ConsoleUI {
   + start() : void
   + displayMainMenu() : void
   + controllCreateProduct() : void
+  + controllCreateMaterials() : Material
   + controllListProducts() : void
+  + controllListMaterials() : void
   + controllProductImpact() : void
   + controllRecyclingMenu() : void
-  + controllListMaterials() : void
-  + getProductDetails(product : Product) : void
+  + recyclingCategoryMenu() : void
 }
 
-ConsoleUI --> ProductService
-ConsoleUI --> MaterialService
-
+ConsoleUI -> ProductService
+ConsoleUI -> MaterialService
+ConsoleUI ..> StrategyService
+}
 @enduml

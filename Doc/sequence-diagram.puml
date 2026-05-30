@@ -1,0 +1,54 @@
+@startuml
+
+title Calculate Product Impact Flow
+
+actor User
+
+participant "ui : ConsoleUI" as UI
+participant "productService : ProductService" as PS
+participant "product : Product" as Product
+participant "strategy : ImpactCalculationStrategy" as Strategy
+participant "material : Material" as Material
+
+User -> UI : controllProductImpact()
+
+UI -> PS : calculateImpact(productName, strategy)
+
+PS -> PS : getProductDetails(productName)
+PS <-- PS : Product
+
+alt [product exists]
+
+    PS -> Product : calculateImpact(strategy)
+    activate Product
+
+    Product -> Strategy : calculateImpact(materials)
+    activate Strategy
+
+    loop [for each material in materials]
+        Strategy -> Material : getImpactValue()
+        activate Material
+        Material --> Strategy : double impactValue
+        deactivate Material
+    end
+
+    Strategy --> Product : totalImpact
+    deactivate Strategy
+
+    Product --> PS : totalImpact
+    deactivate Product
+
+    PS --> UI : double totalImpact
+
+else [product == null]
+
+    PS --> UI : IllegalArgumentException
+
+end
+
+deactivate PS
+UI --> User : display impact result
+
+deactivate UI
+
+@enduml
