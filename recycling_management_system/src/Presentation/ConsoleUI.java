@@ -248,11 +248,11 @@ public class ConsoleUI {
     String advice = productService.getRecyclingGuidance(product);
 
     System.out.println("\n┌"+"─".repeat(45)+"┐");
-    System.out.printf ("│  Product  : %-24s│%n", product.getName().trim());
-    System.out.printf ("│  Category : %-24s│%n", product.getCategory());
-    System.out.printf ("│  Materials: %-24d│%n", product.getMaterials().size());
+    System.out.printf ("│  Product  : %-32s│%n", product.getName().trim());
+    System.out.printf ("│  Category : %-32s│%n", product.getCategory());
+    System.out.printf ("│  Materials: %-32d│%n", product.getMaterials().size());
     System.out.println("├"+"─".repeat(45)+"┤");
-    System.out.printf ("│  Guidance : %-24s│%n", advice);
+    System.out.printf ("│  Guidance : %-32s│%n", advice);
     System.out.println("└"+"─".repeat(45)+"┘");
     }
 
@@ -394,7 +394,7 @@ public class ConsoleUI {
           }
           System.out.println("\n✧⋄⋆⋅⋆⋄✧⋄⋆⋅⋆⋄✧⋄⋆⋅⋆Materials⋆⋅⋆⋄✧⋄⋆⋅⋆⋄✧⋄⋆⋅⋆⋄✧");
           for (Material m : materials) {
-          System.out.printf("  %-15s | ImpactValue: %-12.3f | RecyclingCategory: %-10s\n",
+          System.out.printf("  %-25s | ImpactValue: %-14f | RecyclingCategory: %-10s\n",
            m.getName(),
             m.getImpactValue(),
              m.getRecyclingCategory());
