@@ -114,7 +114,78 @@ public class ConsoleUI {
     }
 
 
-    /**
+
+        /**
+         * Validates a string input from the user.
+         *
+         * Keeps asking until the user enters a non-empty value.
+         *
+         * @param message prompt message shown to the user
+         * @param errorMessage message shown when input is empty
+         * @return a valid non-empty string input
+         */
+        public String validateString(String message, String errorMessage) {
+            while (true) {
+                System.out.print(message);
+                String input = scanner.nextLine().trim();
+
+                if (input.isEmpty()) {
+                    System.err.println(errorMessage);
+                    continue;
+                }
+
+                return input;
+            }
+        }
+
+
+
+        /**
+         * Validates an integer input from the user.
+         *
+         * Keeps asking until the user enters a valid integer value.
+         *
+         * @param message prompt message shown to the user
+         * @param errorMessage message shown when input is not a valid integer
+         * @return a valid integer value
+         */
+        public int validateInt(String message, String errorMessage) {
+            while (true) {
+                System.out.print(message);
+                String input = scanner.nextLine().trim();
+
+                try {
+                    return Integer.parseInt(input);
+                } catch (NumberFormatException e) {
+                    System.err.println(errorMessage);
+                }
+            }
+        }
+
+
+        /**
+         * Validates a double (decimal number) input from the user.
+         *
+         * Keeps asking until the user enters a valid decimal number.
+         *
+         * @param message prompt message shown to the user
+         * @param errorMessage message shown when input is not a valid number
+         * @return a valid double value
+         */
+        public double validateDouble(String message, String errorMessage) {
+            while (true) {
+                System.out.print(message);
+                String input = scanner.nextLine().trim();
+
+                try {
+                    return Double.parseDouble(input);
+                } catch (NumberFormatException e) {
+                    System.err.println(errorMessage);
+                }
+            }
+        }
+
+/**
      * Creates a new product using information entered by the user.
      * 
      * The user must enter:
@@ -128,21 +199,8 @@ public class ConsoleUI {
      * or the menu choice.
      */
     public void controllCreateProduct() {
-    int productlifespan;
-    String productcategory;
-    String productname;
         List<String> productMaterials = new ArrayList<>();
-    while (true) {
-
-        System.out.print("Give a product name: ");
-        productname = scanner.nextLine();
-        if(productname.isEmpty()){
-            System.err.println("Please enter a product name!");
-            continue;
-        }
-        break;
-    }
-
+    String productname = validateString("Give a product name: ","Please enter a product name!");
     /**
      * This if statment prevents duplicate products because product names must be unique.
      */
@@ -150,38 +208,20 @@ public class ConsoleUI {
         System.out.println("Product already exist!!");
         return;
     }
-    while (true) {
-        System.out.print("Give a category name: ");
-        productcategory = scanner.nextLine();
-        if(productcategory.isEmpty()){
-            System.err.println("Please enter a category name!");
-            continue;
-        }
-        break;
-    }
-    
-    while (true) {
-        System.out.print("Give a lifespan value: ");
-        try {
-        productlifespan= Integer.parseInt(scanner.nextLine());
-            
-        } catch (Exception e) {
-            System.err.println("Please enter an integer!");
-            continue;
-        }
-        break;
-    }
+
+    String productcategory = validateString("Give a category name: ","Please enter a category name!");
+
+    int productlifespan = validateInt("Give a lifespan value: ","Please enter an integer!");
 
     boolean moreMaterial = true;
     do {
-        System.out.print("What material does the product have: ");
-        String productmaterial = scanner.nextLine();
+        String productmaterial = validateString("What material does the product have: ","Can't put an empty Material!");
         if(materialService.findByMaterialName(productmaterial) != null){
             productMaterials.add(productmaterial);
         } else{
             System.out.println("Matrial not found.");
             System.out.print("Want to continue or create that Material? Y/N/C: ");
-            String answer = scanner.nextLine().trim().toUpperCase();
+            String answer = validateString("Want to continue Y/N or create that Material and continue? type (C): ", "Please enter a valid choice").trim().toUpperCase();
 
             if(answer.contains("N")){
                 return;
@@ -226,16 +266,22 @@ public class ConsoleUI {
      * The user selects which calculation strategy they want to use for that specific product. 
      */
     public void controllProductImpact() {
-    System.out.print("Enter product name: ");
-    String name = scanner.nextLine();
+    String name = validateString("Enter product name: ", "Product can't be empty!!");
 
     System.out.println("Choose a calculation strategy:");
     System.out.println("  1. Simple (sum of material impacts)");
     System.out.println("  2. Weighted (adjusted for product lifespan)");
-    System.out.print("Your choice: ");
-    int choice = scanner.nextInt();
-    scanner.nextLine();
-    
+    int choice = validateInt("Your choice: ", "Please enter a valid integer!!");
+    while (true) {
+        
+        if(choice != 1 && choice != 2){
+            System.err.println("Please enter a valid integer!!");
+            choice = validateInt("Your choice: ", "Please enter a valid integer!!");
+            continue;
+        }
+        break;
+    }
+
     Product product = productService.getProductDetails(name);
     if (product == null) {
         System.out.println("Product not found.");
@@ -255,8 +301,7 @@ public class ConsoleUI {
     */
     public void controllRecyclingMenu() {
     System.out.println("\n♻  ─── Recycling Guidance ───  ♻");
-    System.out.print("Enter product name to get recycling guidance (b to get back): ");
-    String name = scanner.nextLine().trim();
+    String name = validateString("Enter product name to get recycling guidance (b to get back): ", "Product can't be empty!!").trim();
     if(name.equalsIgnoreCase("b")){
         displayMainMenu();
         return;
@@ -311,37 +356,20 @@ public class ConsoleUI {
      * @return returns the created material if the creation succeeded or returns null.
      */
     private Material controllCreateMaterials() {
-        String materialName;
-        double impactValue;
         RecyclingCategory materialRecyclingCategory;
-        
-        System.out.print("Give material name: ");
-        materialName = scanner.nextLine().trim();
+
+        String materialName = validateString("Give material name: ", "Material name cannot be empty!").trim();
         if(materialService.findByMaterialName(materialName) != null){
             System.out.println("Material already exists!");
             return null;
         }
         
-        while (true) {
-            System.out.print("Enter the impact value: ");
-            
-            try {
-                impactValue = scanner.nextDouble();
-                scanner.nextLine();
-                break;
-                
-            } catch (Exception e) {
-                System.out.println("Please enter a valid number!");
-                scanner.nextLine();
-            }
-        }
+        double impactValue = validateDouble("Enter the impact value: ","Please enter a valid number!");
 
         while (true) {
         recyclingCategoryMenu();
         
-        System.out.print("What recycling category is the material?: ");
-        int answer = scanner.nextInt();
-        scanner.nextLine();
+        int answer = validateInt("What recycling category is the material?: ", "please enter a valid integer");
         
         
         switch (answer) {
