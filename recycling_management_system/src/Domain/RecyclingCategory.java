@@ -11,7 +11,7 @@ package Domain;
  * - classify materials
  * - support recycling guidance generation
  * - organize materials in the system
- */
+*/
 public enum RecyclingCategory {
     PLASTIC,
     METAL,

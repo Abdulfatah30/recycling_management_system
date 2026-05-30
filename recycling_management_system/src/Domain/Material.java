@@ -27,7 +27,7 @@ public class Material implements Serializable {
      * @param name name of the material.
      * @param impactValue environmental impact value of the material.
      * @param category recycling category assigned to the material.
-     */
+    */
     public Material(String name, double impactValue, RecyclingCategory category){
         this.name = name;
         this.impactValue = impactValue;
@@ -39,7 +39,7 @@ public class Material implements Serializable {
      * Returns the name of the material.
      * 
      * @return material name
-     */
+    */
     public String getName(){
         return name;
     }
@@ -49,7 +49,7 @@ public class Material implements Serializable {
      * Returns the environmental impact value of the material.
      * 
      * @return the impact value used in environmental calculations.
-     */
+    */
     public double getImpactValue(){
         return impactValue;
     }
@@ -58,7 +58,7 @@ public class Material implements Serializable {
      * Returns the recycling category of the material.
      * 
      * @return the recycling category assigned to the material
-     */
+    */
     public RecyclingCategory getRecyclingCategory(){
         return recyclingCategory;
     }
